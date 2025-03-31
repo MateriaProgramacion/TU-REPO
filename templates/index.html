@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Tienda</title>
+</head>
+<body>
+    <h1>Bienvenido a Mi Tienda</h1>
+    <h2>Catálogo de productos</h2>
+    <ul>
+        {% for producto in productos %}
+            <li>
+                <a href="{{ url_for('producto', id=producto.id) }}">
+                    {{ producto.nombre }} - ${{ producto.precio }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
