@@ -6,11 +6,11 @@ app = Flask(__name__)
 # Configura tu clave secreta de Stripe
 stripe.api_key = "sk_test_51RBRkw09LYEO8dot3czGI8R8zKn8TvLGuzdv7e2yxt4YjZ7ttIMQMZTRqE2y2CueATMFcskTYxbWh6KfeyIVIMns00eMI8mnGBi"
 
-# Lista de productos
+# Lista de productos con las imágenes
 productos = [
-    {'id': 1, 'nombre': 'Producto 1', 'precio': 100},
-    {'id': 2, 'nombre': 'Producto 2', 'precio': 200},
-    {'id': 3, 'nombre': 'Producto 3', 'precio': 300},
+    {'id': 1, 'nombre': 'Producto 1', 'precio': 100, 'imagen': 'images/producto1.jpg'},
+    {'id': 2, 'nombre': 'Producto 2', 'precio': 200, 'imagen': 'images/producto2.jpg'},
+    {'id': 3, 'nombre': 'Producto 3', 'precio': 300, 'imagen': 'images/producto3.jpg'},
 ]
 
 # Página de inicio con lista de productos
