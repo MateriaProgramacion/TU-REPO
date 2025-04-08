@@ -17,21 +17,25 @@ productos = [
 def home():
     return render_template("index.html", productos=productos)
 
-@app.route("/checkout", methods=["POST"])
-def checkout():
+@app.route("/checkout/<int:id>", methods=["POST"])
+def checkout(id):
+    # Buscar el producto con el id recibido
+    producto = next((p for p in productos if p['id'] == id), None)
+    if producto is None:
+        return jsonify(error="Producto no encontrado"), 404
+
     try:
+        # Crear una sesión de Stripe para el producto seleccionado
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
-            line_items=[
-                {
-                    "price_data": {
-                        "currency": "usd",
-                        "product_data": {"name": "Producto de prueba"},
-                        "unit_amount": 1000,  # Precio en centavos (10.00 USD)
-                    },
-                    "quantity": 1,
-                }
-            ],
+            line_items=[{
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": {"name": producto['nombre']},
+                    "unit_amount": producto['precio'] * 100,  # Precio en centavos
+                },
+                "quantity": 1,
+            }],
             mode="payment",
             success_url="https://tu-repo.onrender.com/success",
             cancel_url="https://tu-repo.onrender.com/cancel",
@@ -58,6 +62,7 @@ def producto(id):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
