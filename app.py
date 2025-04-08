@@ -1,9 +1,9 @@
 import stripe
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, redirect, request, url_for, jsonify
 
 app = Flask(__name__)
 
-# Clave secreta de Stripe (usa la clave de pruebas)
+# Configura tu clave secreta de Stripe
 stripe.api_key = "sk_test_51RBRkw09LYEO8dot3czGI8R8zKn8TvLGuzdv7e2yxt4YjZ7ttIMQMZTRqE2y2CueATMFcskTYxbWh6KfeyIVIMns00eMI8mnGBi"
 
 # Lista de productos
@@ -26,52 +26,58 @@ def producto(id):
         return "Producto no encontrado", 404
     return render_template("producto.html", producto=producto)
 
-# Ruta de compra directa con mensaje (simulada sin Stripe)
+# Ruta para procesar la compra
 @app.route("/comprar", methods=["POST"])
 def comprar():
     producto_id = int(request.form['producto_id'])
+    metodo_pago = request.form['metodo_pago']
     producto = next((p for p in productos if p['id'] == producto_id), None)
-    if producto:
-        return f"<h2>¡Gracias por comprar {producto['nombre']} por ${producto['precio']}!</h2><br><a href='/'>Volver al catálogo</a>"
-    return "Producto no encontrado", 404
-
-# Ruta que crea sesión de pago real con Stripe
-@app.route("/checkout/<int:id>", methods=["POST"])
-def checkout(id):
-    producto = next((p for p in productos if p['id'] == id), None)
+    
     if producto is None:
-        return jsonify(error="Producto no encontrado"), 404
+        return "Producto no encontrado", 404
+    
+    # Configura el método de pago dependiendo de la elección del usuario
+    if metodo_pago == 'tarjeta':
+        payment_method_types = ['card']
+    elif metodo_pago == 'oxxo':
+        payment_method_types = ['oxxo']
 
+    # Crear una sesión de pago con Stripe
     try:
         session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
+            payment_method_types=payment_method_types,
             line_items=[{
                 "price_data": {
-                    "currency": "usd",
+                    "currency": "mxn",
                     "product_data": {"name": producto['nombre']},
                     "unit_amount": producto['precio'] * 100,
                 },
                 "quantity": 1,
             }],
             mode="payment",
-            success_url="https://tu-repo.onrender.com/success",
-            cancel_url="https://tu-repo.onrender.com/cancel",
+            success_url=url_for('exito', _external=True),
+            cancel_url=url_for('cancelado', _external=True),
         )
-        print(f"Session URL: {session.url}")
-        return jsonify({"url": session.url})
+        # Redirigir al checkout de Stripe
+        return redirect(session.url, code=303)
     except Exception as e:
         return jsonify(error=str(e)), 500
 
-# Rutas de éxito o cancelación de Stripe
-@app.route("/success")
-def success():
-    return "¡Pago exitoso!"
+# Ruta para la página de éxito
+@app.route('/exito')
+def exito():
+    return "<h2>¡Compra realizada con éxito!</h2><br><a href='/'>Volver al catálogo</a>"
 
-@app.route("/cancel")
-def cancel():
-    return "Pago cancelado"
+# Ruta para la página de cancelación
+@app.route('/cancelado')
+def cancelado():
+    return "<h2>La compra ha sido cancelada.</h2><br><a href='/'>Volver al catálogo</a>"
 
-if __name__ == "__main__":
+def obtener_producto_por_id(id):
+    # Función de ejemplo para obtener un producto desde una base de datos o lista
+    return next((producto for producto in productos if producto['id'] == id), None)
+
+if __name__ == '__main__':
     app.run(debug=True)
 
 
