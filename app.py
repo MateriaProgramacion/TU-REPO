@@ -40,6 +40,8 @@ def checkout(id):
             success_url="https://tu-repo.onrender.com/success",
             cancel_url="https://tu-repo.onrender.com/cancel",
         )
+        # Imprimir la URL de la sesión para verificar
+        print(f"Session URL: {session.url}")
         return jsonify({"url": session.url})
     except Exception as e:
         return jsonify(error=str(e)), 500
