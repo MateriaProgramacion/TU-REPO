@@ -9,13 +9,17 @@
     <h1>{{ producto.nombre }}</h1>
     <p>Precio: ${{ producto.precio }}</p>
     <a href="{{ url_for('home') }}">Volver al catálogo</a>
-    <!-- Formulario para comprar -->
+
+    <!-- Formulario para elegir el método de pago -->
     <form action="{{ url_for('comprar') }}" method="post">
         <input type="hidden" name="producto_id" value="{{ producto.id }}">
-        <button type="submit">Comprar</button>
+        
+        <!-- Botón para pagar con tarjeta -->
+        <button type="submit" name="metodo_pago" value="tarjeta">Pagar con tarjeta</button>
+        
+        <!-- Botón para pagar con OXXO -->
+        <button type="submit" name="metodo_pago" value="oxxo">Pagar con OXXO</button>
     </form>
-
-    <br>
-
 </body>
 </html>
+
