@@ -10,13 +10,22 @@
     <p>Precio: ${{ producto.precio }}</p>
     <a href="{{ url_for('home') }}">Volver al catálogo</a>
 
+    <!-- Imagen del producto -->
+    {% if producto.id == 1 %}
+        <img src="{{ url_for('static', filename='images/producto1.jpg') }}" alt="Producto 1">
+    {% elif producto.id == 2 %}
+        <img src="{{ url_for('static', filename='images/producto2.jpg') }}" alt="Producto 2">
+    {% elif producto.id == 3 %}
+        <img src="{{ url_for('static', filename='images/producto3.jpg') }}" alt="Producto 3">
+    {% endif %}
+
     <!-- Formulario para elegir el método de pago -->
     <form action="{{ url_for('comprar') }}" method="post">
         <input type="hidden" name="producto_id" value="{{ producto.id }}">
-        
+
         <!-- Botón para pagar con tarjeta -->
         <button type="submit" name="metodo_pago" value="tarjeta">Pagar con tarjeta</button>
-        
+
         <!-- Botón para pagar con OXXO -->
         <button type="submit" name="metodo_pago" value="oxxo">Pagar con OXXO</button>
     </form>
