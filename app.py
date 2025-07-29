@@ -77,8 +77,6 @@ def obtener_producto_por_id(id):
     # Función de ejemplo para obtener un producto desde una base de datos o lista
     return next((producto for producto in productos if producto['id'] == id), None)
 
-if __name__ == '__main__':
-    app.run(debug=True)
 
 
 
