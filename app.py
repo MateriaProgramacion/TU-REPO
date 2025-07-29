@@ -4,7 +4,7 @@ from flask import Flask, render_template, redirect, request, url_for, jsonify
 app = Flask(__name__)
 
 # Configura tu clave secreta de Stripe
-stripe.api_key = "sk_test_51RBRkw09LYEO8dot3czGI8R8zKn8TvLGuzdv7e2yxt4YjZ7ttIMQMZTRqE2y2CueATMFcskTYxbWh6KfeyIVIMns00eMI8mnGBi"
+stripe.api_key = "sk_test_51RBRkw09LYEO8dot3czGI8R8zKn8TvLGuzdv7e2yxt4YjZ7ttIMQMZTRqE2y2CueATMFcskTYxbWh6KfeyIVIMns00eMI8mnGB"
 
 # Lista de productos con las imágenes
 productos = [
