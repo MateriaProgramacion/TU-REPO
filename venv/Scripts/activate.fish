@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV 'C:\Users\ADMIN\Desktop\Mi-tienda\venv'
+set -gx VIRTUAL_ENV 'C:\Users\ADMIN\Downloads\tienda_en_linea_corregido 2000\TU-REPO\TU-REPO\venv'
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"Scripts $PATH
